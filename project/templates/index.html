@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Translator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css') }}" />
+</head>
+<body> 
+    <script> 
+    function getSelectionText() {
+        var text = "";
+        var activeEl = document.activeElement;
+        var activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
+        if (
+        (activeElTagName == "textarea") || (activeElTagName == "input" &&
+        /^(?:text|search|password|tel|url)$/i.test(activeEl.type)) &&
+        (typeof activeEl.selectionStart == "number")
+        ) {
+            text = activeEl.value.slice(activeEl.selectionStart, activeEl.selectionEnd);
+        } else if (window.getSelection) {
+            text = window.getSelection().toString();
+        }
+        return text;
+    }
+
+    document.onmouseup = document.onkeyup = document.onselectionchange = function() {
+    var a = getSelectionText()
+    if (a != ""){
+        document.getElementById("from_text").value = a;
+    }
+    }; 
+    </script> 
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>Your article or text</h2>
+            <br>
+            <textarea placeholder="Input your text here.." id="editor" name="content"></textarea>
+            <!-- for saving textarea -->
+            <script>
+                setInterval( function() {
+                    var value = document.getElementById("editor").value;
+                    if (value == ""){
+                        var x = sessionStorage["textValue"];
+                        if (x == undefined){
+                            x = "";
+                        }
+                        document.getElementById("editor").innerHTML = x;
+                    }
+                    else{
+                        sessionStorage["textValue"] = value;
+                    }
+                }, 100);
+            </script>
+            
+            <!-- script for editor -->
+            <!-- <script>
+                ClassicEditor
+                    .create( document.querySelector( '#editor' ) )
+                    .catch( error => {
+                        console.error( error );
+                    } );
+            </script> -->
+            
+            <h2>New word</h2>
+            <br>
+            
+             <form action="/" method="POST">
+                <div class="col-xs-4">
+                    <input class="form-control" name="input" type="text" id="from_text">
+                </div>
+                <input type="submit" value="Add" id="click">
+            </form>
+            
+        </div>
+
+        <div class="col-sm-6">
+            <h2>Added words</h2>
+            <br>
+            <table class="table table-hover">
+                <thead>
+                    <th>ID</th>
+                    <th>New</th>
+                    <th>Translated</th>
+                    <th>Actions</th>
+                </thead>
+                <tbody>
+                {% for word in words %}
+                    <tr>
+                        <td>{{ word.id }}</td>
+                        <td>{{ word.original }}</td>
+                        <td>{{ word.translated }}</td>
+                        <td>
+                            <a href="/delete/{{word.id}}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

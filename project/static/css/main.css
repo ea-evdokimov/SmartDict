@@ -1,0 +1,28 @@
+body, html {
+  margin: 10;
+  font-family: "Lucida Console", Courier, monospace;
+}
+
+table, td, th {
+  border: 2px solid lightgray;
+} 
+
+table {
+  border-collapse: collapse;
+  background-color: lightyellow;
+  float: left;
+  width: 40%;
+}
+
+textarea {
+  width: 100%;
+  height: 350px;
+  padding: 12px 30px;
+  box-sizing: border-box;
+  border: 4px solid lightgray;
+  border-radius: 4px;
+  background-color: lightyellow;
+  font-size: 16px;
+  font-family: "Lucida Console", Courier, monospace;
+  resize: none;
+  }
