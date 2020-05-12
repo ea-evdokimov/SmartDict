@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
+    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script> -->
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.css') }}" />
 </head>
 <body> 
@@ -34,17 +34,43 @@
         document.getElementById("from_text").value = a;
     }
     }; 
-    </script> 
+    </script>
+
+    <script>
+        document.onkeydown = function(evt) {
+            evt = evt || window.event;
+            if (evt.ctrlKey && evt.keyCode == 13) {
+                document.getElementById("click").click();
+            }
+        };
+    </script>
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-6">
             <h2>Your article or text</h2>
             <br>
+            
             <textarea placeholder="Input your text here.." id="editor" name="content"></textarea>
+            <button onclick="delText()">Clear</button>
+            
+            <script>
+                function delText(){
+                    document.getElementById("editor").innerHTML = "";
+                    sessionStorage["textValue"] = "";
+                }
+            </script>
+
             <!-- for saving textarea -->
             <script>
                 setInterval( function() {
+                    // window.localStorage.setItem("CaretPosition", document.querySelector("#editor").selectionStart);
+
+                    // document.querySelector("#editor").focus();
+                    // if (localStorage.CaretPosition) {
+                    //     document.querySelector("#editor").selectionStart = localStorage.CaretPosition;
+                    // };
+
                     var value = document.getElementById("editor").value;
                     if (value == ""){
                         var x = sessionStorage["textValue"];
@@ -56,24 +82,25 @@
                     else{
                         sessionStorage["textValue"] = value;
                     }
-                }, 100);
+
+                }, 500);
             </script>
-            
+
             <!-- script for editor -->
-            <!-- <script>
-                ClassicEditor
-                    .create( document.querySelector( '#editor' ) )
-                    .catch( error => {
-                        console.error( error );
-                    } );
-            </script> -->
-            
+            <script>
+                function caretPositionLoad() {
+                    document.querySelector("#editor").focus();
+                    if (localStorage.CaretPosition) {
+                        document.querySelector("#editor").selectionStart = localStorage.CaretPosition;
+                    };
+                };
+            </script>
+
             <h2>New word</h2>
             <br>
-            
-             <form action="/" method="POST">
-                <div class="col-xs-4">
-                    <input class="form-control" name="input" type="text" id="from_text">
+            <form action="/" method="POST">
+                <div class="col-xs-5">
+                    <input class="form-control" name="input" type="text" id="from_text" placeholder="Press ctrl+enter..">
                 </div>
                 <input type="submit" value="Add" id="click">
             </form>
@@ -88,7 +115,7 @@
                     <th>ID</th>
                     <th>New</th>
                     <th>Translated</th>
-                    <th>Actions</th>
+                    <th>Action</th>
                 </thead>
                 <tbody>
                 {% for word in words %}
@@ -103,6 +130,11 @@
                 {% endfor %}
                 </tbody>
             </table>
+            <form action="/list" method="POST">
+                <div align="right">
+                    <input type="submit" value="Get list" id="go">
+                </div>
+            </form>
         </div>
     </div>
 </body>
