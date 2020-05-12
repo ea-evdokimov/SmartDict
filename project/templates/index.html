@@ -7,10 +7,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script> -->
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.css') }}" />
+
 </head>
-<body> 
+<body>
     <script> 
     function getSelectionText() {
         var text = "";
@@ -44,6 +44,19 @@
             }
         };
     </script>
+    
+    <!-- script for caret -->
+    <script>
+        function caretPositionSave() { 
+            window.localStorage.setItem("CaretPosition", document.querySelector("#editor").selectionStart);
+        };
+        function caretPositionLoad() {
+            document.querySelector("#editor").focus();
+            if (localStorage.CaretPosition) {
+                document.querySelector("#editor").selectionStart = localStorage.CaretPosition;
+            };
+        };
+    </script>
 
 <div class="container-fluid">
     <div class="row">
@@ -52,7 +65,8 @@
             <br>
             
             <textarea placeholder="Input your text here.." id="editor" name="content"></textarea>
-            <button onclick="delText()">Clear</button>
+            
+            <button onclick="caretPositionLoad()" id="back">Back to reading(x2)</button>
             
             <script>
                 function delText(){
@@ -64,13 +78,6 @@
             <!-- for saving textarea -->
             <script>
                 setInterval( function() {
-                    // window.localStorage.setItem("CaretPosition", document.querySelector("#editor").selectionStart);
-
-                    // document.querySelector("#editor").focus();
-                    // if (localStorage.CaretPosition) {
-                    //     document.querySelector("#editor").selectionStart = localStorage.CaretPosition;
-                    // };
-
                     var value = document.getElementById("editor").value;
                     if (value == ""){
                         var x = sessionStorage["textValue"];
@@ -82,19 +89,9 @@
                     else{
                         sessionStorage["textValue"] = value;
                     }
-
-                }, 500);
+                }, 200);
             </script>
 
-            <!-- script for editor -->
-            <script>
-                function caretPositionLoad() {
-                    document.querySelector("#editor").focus();
-                    if (localStorage.CaretPosition) {
-                        document.querySelector("#editor").selectionStart = localStorage.CaretPosition;
-                    };
-                };
-            </script>
 
             <h2>New word</h2>
             <br>
@@ -102,7 +99,7 @@
                 <div class="col-xs-5">
                     <input class="form-control" name="input" type="text" id="from_text" placeholder="Press ctrl+enter..">
                 </div>
-                <input type="submit" value="Add" id="click">
+                <input type="submit" value="Add" id="click" onclick="caretPositionSave()">
             </form>
             
         </div>
