@@ -46,8 +46,8 @@ class BsicTest(unittest.TestCase):
 
         trans = ["новый", "машина", "эксперимент"]
         
-        for w in input_w:
-            self.assertEqual(w, tr.tralate(w, dest='ru').text)
+        for w in range(len(input_w)):
+            self.assertEqual(trans[w], tr.translate(input_w[w], dest='ru').text)
 
     def test_del_data_base(self):
         db.drop_all()
