@@ -1,5 +1,6 @@
 body, html {
   margin: 10;
+  margin-right: 10;
   font-family: "Lucida Console", Courier, monospace;
 }
 
@@ -16,7 +17,8 @@ table {
 
 textarea {
   width: 100%;
-  height: 350px;
+  height: 600px;
+  margin: 10;
   padding: 12px 30px;
   box-sizing: border-box;
   border: 4px solid lightgray;
@@ -26,3 +28,4 @@ textarea {
   font-family: "Lucida Console", Courier, monospace;
   resize: none;
   }
+

@@ -42,17 +42,12 @@ class BsicTest(unittest.TestCase):
         self.assertEqual(first.translated, translated)
 
     def test_transl(self):
-        input1 = "new" 
-        input2 = "car"
-        input3 = "experiment"
+        input_w = ["new", "car", "experiment"]
 
-        a = tr.translate(input1, dest='ru').text
-        b = tr.translate(input2, dest='ru').text
-        c = tr.translate(input3, dest='ru').text
+        trans = ["новый", "машина", "эксперимент"]
         
-        self.assertEqual(a, "новый")
-        self.assertEqual(b, "машина")
-        self.assertEqual(c, "эксперимент")
+        for w in range(len(input_w)):
+            self.assertEqual(trans[w], tr.translate(input_w[w], dest='ru').text)
 
     def test_del_data_base(self):
         db.drop_all()
